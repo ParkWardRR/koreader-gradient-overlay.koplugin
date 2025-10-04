@@ -1,0 +1,6 @@
+{
+  "workspace": {
+    "library": ["./koreader/frontend"],
+    "ignoreDir": [".git", ".vscode", "koreader/.git"]
+  }
+}
