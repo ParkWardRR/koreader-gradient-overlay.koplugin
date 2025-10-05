@@ -1,43 +1,50 @@
-# Gradient Overlay for KOReader <!-- [web:34][web:36] -->
+# Gradient Overlay for KOReader
 
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](https://opensource.org/license/bsd-3-clause)
 
 
+A KOReader plugin that renders a horizontal color gradient beneath each text line to aid visual tracking on color e‑ink, computed locally with no network calls, with automatic night‑mode support, engine‑aware geometry when available, cached rendering, and per‑book profiles. [web:34][web:2]
 
-A KOReader plugin that renders a horizontal color gradient beneath each text line to aid visual tracking on color e‑ink, computed locally with no network calls, with automatic night‑mode support and per‑book profiles. <!-- [web:2][web:36] -->
+Status: Untested and work in progress — community testing and contributions are highly encouraged to validate alignment across engines, formats, and devices. [web:122][web:89]
 
-Status: Untested and work in progress; community testing and contributions are highly encouraged. <!-- [web:129][web:89] -->
+Note: This project emulates a color‑gradient reading aid similar in visual effect to certain browser tools such as “BeeLine Reader,” but it is independent, offline, and does not include or use any proprietary code or services. [web:89][web:99]
 
-> Note: This project emulates a color‑gradient reading aid similar in visual effect to tools like “BeeLine Reader,” but it is independent, offline, and does not include or use any proprietary code or services. <!-- [web:89][web:99] -->
-
-## Key features
-- Local break calculation per line with pluggable segmentation: smart rules, thirds, halves, optional tokenizer if available. <!-- [web:56][web:36] -->
-- Engine‑aware geometry probing for better line alignment, with graceful fallback to estimated rows. <!-- [web:70][web:36] -->
-- Automatic night‑mode palette and opacity switching, with per‑book overrides via DocSettings. <!-- [web:2][web:49] -->
-- Cached gradient strips and partial refresh requests for faster page turns and reduced ghosting. <!-- [web:112][web:114] -->
+## Features
+| Feature | Details |
+| --- | --- |
+| Local segmentation | Pluggable breaks: smart rules, thirds, halves, optional tokenizer if available; no network or cloud dependencies. [web:56][web:36] |
+| Engine‑aware geometry | Attempts to read real line rectangles from the active engine/view; falls back to estimation otherwise. [web:70][web:36] |
+| Night‑mode support | Auto palette and opacity switching with per‑book overrides for edge cases. [web:2][web:49] |
+| Cached rendering | Precomputed gradient strips and partial refresh requests for faster page turns and less ghosting. [web:112][web:114] |
 
 ## Installation
-1. Create a folder: `koreader/frontend/plugins/koreader-gradient-overlay.koplugin/`. <!-- [web:34][web:36] -->
-2. Copy `init.lua` and `_meta.lua` into that folder and restart KOReader. <!-- [web:34][web:36] -->
-3. In a book, open Menu → Gradient Overlay → Toggle / Settings. <!-- [web:2][web:34] -->
+Create a folder named koreader/frontend/plugins/koreader-gradient-overlay.koplugin, copy init.lua and _meta.lua into it, restart KOReader, then in‑book open Menu → Gradient Overlay → Toggle / Settings. [web:34][web:2]
 
 ## Usage
-- Toggle the overlay on/off, pick a segmentation method, and select a color preset; night mode detection will switch palettes automatically. <!-- [web:2][web:112] -->
-- Per‑book overrides: the plugin stores palette, opacity, and segmentation preferences per title. <!-- [web:49][web:36] -->
-- Designed for color e‑ink like the Bigme B6; it will render on grayscale but with reduced effect. <!-- [web:2][web:34] -->
+Enable the overlay, choose a segmentation method, and select a color preset; the plugin auto‑switches palettes for night mode and stores per‑book preferences via DocSettings. [web:2][web:49]
 
-## Settings overview
-- Segmentation: smart | thirds | halves | tokenizer (if LuaNLP is installed). <!-- [web:56][web:36] -->
-- Palettes: light/night left/right colors and per‑mode opacity. <!-- [web:2][web:34] -->
-- Rendering: bar height %, vertical offset, and partial refresh usage. <!-- [web:112][web:2] -->
-
-## Roadmap
-- Prefer exact line/word rectangles from each engine where available (EPUB/PDF), and improve mapping for RTL/vertical layouts. <!-- [web:70][web:36] -->
-- Add device‑tuned presets for common color e‑ink panels and publish a small calibration page. <!-- [web:34][web:36] -->
-- Document a minimal tokenizer hook with examples and language notes. <!-- [web:56][web:99] -->
+## Settings
+| Setting | Options | Notes |
+| --- | --- | --- |
+| Segmentation | smart, thirds, halves, tokenizer | Tokenizer mode uses a local Lua tokenizer if present; otherwise falls back to smart rules. [web:56][web:36] |
+| Palettes | light/night left+right colors | Separate opacity per mode to maintain contrast on dark backgrounds. [web:2][web:36] |
+| Rendering | bar height %, vertical offset, partial refresh | Uses UIManager:setDirty for targeted refresh on e‑ink devices. [web:112][web:34] |
 
 ## Contributing
-This project welcomes issues, PRs, device reports, and screenshots—especially alignment feedback on different formats and engines; please see CONTRIBUTING.md. <!-- [web:89][web:129] -->
+This repository is untested/WIP and needs real‑device validation; reports and PRs from color e‑ink devices (for example, Bigme B6) are especially helpful. [web:122][web:34]
+
+Development workflow: fork the repository, copy the plugin folder to koreader/frontend/plugins/koreader-gradient-overlay.koplugin on a device or emulator, restart KOReader, and use the in‑book menu to toggle settings and observe redraw behavior. [web:34][web:2]
+
+Testing guidance: compare alignment while switching fonts, margins, and justification; verify engine‑derived line rectangles versus estimated layout; capture screenshots where gradient seams drift from glyph bounds. [web:2][web:36]
+
+Performance tips: leverage partial refresh to limit repaint area, and prefer cached gradient strips to reduce fill operations and latency on page turns. [web:112][web:114]
+
+Issue reports: include device model, KOReader version, document format (EPUB/PDF/…), segmentation method, palette, and screenshots illustrating any misalignment or refresh artifacts. [web:89][web:122]
+
+Pull requests: keep changes focused, describe the rationale and testing steps, and update documentation snippets in this README if behavior or settings change. [web:89][web:99]
+
+## Roadmap
+Engine‑specific line/word rectangle mapping across EPUB/PDF with better handling for RTL and vertical text, device‑tuned color presets for common panels, and a minimal tokenizer hook guide for multi‑language tuning. [web:70][web:34]
 
 ## License
-BSD 3‑Clause; see LICENSE in this repository. <!-- [web:130][web:128] -->
+BSD 3‑Clause; include the full license text in source and distribution artifacts in accordance with attribution and no‑endorsement requirements. [web:130][web:125]
